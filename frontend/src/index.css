@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-canopy-border;
+  }
+  body {
+    @apply bg-canopy-bg text-canopy-text font-body antialiased;
+  }
+  ::selection {
+    @apply bg-canopy-bright/30 text-canopy-text;
+  }
+}
+
+@layer utilities {
+  .text-glow {
+    text-shadow: 0 0 18px rgba(95, 190, 132, 0.35);
+  }
+  .focus-ring {
+    @apply outline-none focus-visible:ring-2 focus-visible:ring-canopy-bright focus-visible:ring-offset-2 focus-visible:ring-offset-canopy-bg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
