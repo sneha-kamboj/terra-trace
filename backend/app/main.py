@@ -29,7 +29,11 @@ app.mount(
     StaticFiles(directory="static"),
     name="static",
 )
-
+app.mount(
+    "/uploads",
+    StaticFiles(directory=settings.UPLOAD_DIR),
+    name="uploads",
+)
 app.include_router(
     health_router,
     prefix=settings.API_PREFIX,
