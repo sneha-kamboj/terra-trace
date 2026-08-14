@@ -2,6 +2,16 @@ import { getMockSampleImages, getMockDetectionResult, getMockUploadResult } from
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 const USE_MOCK = !API_BASE_URL;
+const BACKEND_ORIGIN = API_BASE_URL.replace(/\/api\/?$/, "");
+
+function resolveImageUrls(data) {
+  if (USE_MOCK || !data?.images) return data;
+  const resolved = {};
+  for (const [key, value] of Object.entries(data.images)) {
+    resolved[key] = value ? `${BACKEND_ORIGIN}${value}` : value;
+  }
+  return { ...data, images: resolved };
+}
 
 
 function toCamel(obj) {
@@ -56,7 +66,6 @@ export async function detectFromSample(sampleId) {
   
   throw new ApiError("NOT_IMPLEMENTED", "Wire sample-to-detect flow once backend is live.");
 }
-
 export async function detect(beforeFile, afterFile, locationName) {
   if (!beforeFile || !afterFile) {
     throw new ApiError("MISSING_IMAGE", "Both before and after images are required.");
@@ -71,7 +80,8 @@ export async function detect(beforeFile, afterFile, locationName) {
   if (locationName) form.append("location_name", locationName);
 
   const res = await fetch(`${API_BASE_URL}/detect`, { method: "POST", body: form });
-  return handleResponse(res);
+  const data = await handleResponse(res);
+  return resolveImageUrls(data);
 }
 
 export async function getResult(requestId) {
