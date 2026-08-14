@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Environment variables
+.env
+
+# Uploaded/generated files
+uploads/
+static/results/
+
+# Model weights
+weights/
+
+# IDE
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
